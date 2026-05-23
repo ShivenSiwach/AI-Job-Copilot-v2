@@ -1,161 +1,383 @@
-# AI Job Copilot: Agentic AI Resume Matcher and Job Recommender
+#  AI Job Copilot v2
+### Agentic AI Resume Matcher & Job Recommender
 
-AI Job Copilot is an AI-powered career intelligence application designed to help users analyze resumes, match them against job descriptions, identify skill gaps, and generate personalized learning roadmaps.
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.45.1-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![Gemini](https://img.shields.io/badge/Google%20Gemini-API-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-Built with Python, Streamlit, and Google Gemini API, the project combines resume parsing, semantic similarity, skill-gap detection, and LLM-driven career guidance into a practical end-to-end workflow. It is designed as a real-world portfolio project for students, freshers, and early-career professionals who want actionable career insights instead of generic resume feedback.
-
----
-
-## Overview
-
-AI Job Copilot helps users answer key career questions such as:
-
-- Does my resume match this job?
-- Which skills am I missing?
-- What roles am I best suited for?
-- What should I learn next to improve my chances?
-
-The application provides a structured AI workflow that:
-
-1. Accepts a resume upload (PDF)
-2. Extracts and processes resume text
-3. Compares resume content against job descriptions
-4. Calculates semantic relevance / match score
-5. Detects missing skills and improvement areas
-6. Recommends suitable job roles
-7. Generates a personalized learning roadmap
-
-This project is well suited for portfolios targeting:
-
-- AI Associate
-- Data Analyst
-- Machine Learning Intern
-- NLP Intern
-- Python Developer
-- GenAI / LLM Intern
-- Career-tech / HR-tech roles
+> An intelligent career guidance system that analyzes your resume, recommends job roles, detects skill gaps, and generates a personalized 30-day learning roadmap — powered by LLMs, semantic embeddings, and cosine similarity.
 
 ---
 
-## Key Features
+##  Table of Contents
 
-### Resume Upload and Parsing
-- Upload resumes in PDF format
-- Extract text from resumes for downstream analysis
-- Prepare structured content for semantic comparison
-
-### Job Description Analysis
-- Accept job descriptions as user input
-- Normalize and process role requirements
-- Extract relevant keywords and skill signals
-
-### Semantic Resume-to-Job Matching
-- Compare resume content with job descriptions using embeddings
-- Compute a semantic relevance / similarity score
-- Move beyond simple keyword matching
-
-### Skill Gap Detection
-- Identify missing or underrepresented skills
-- Highlight important capabilities required by the target role
-- Provide actionable improvement areas
-
-### Role Recommendation
-- Suggest suitable roles based on resume content
-- Help users who are unsure which roles best match their current profile
-
-### Personalized Learning Roadmap
-- Generate a structured learning plan (for example, a 30-day roadmap)
-- Recommend what to learn next based on skill gaps
-- Convert career advice into practical next steps
-
-### Agentic / Modular AI Workflow
-- Organize the solution into logical modules such as:
-  - Resume parsing
-  - Resume analysis
-  - Job matching
-  - Skill-gap detection
-  - Roadmap generation
-
-### Interactive Web Interface
-- Built with Streamlit for quick and user-friendly interaction
-- Suitable for demos, portfolio showcases, and future deployment
+- [Overview](#-overview)
+- [Features](#-features)
+- [System Architecture](#-system-architecture)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Usage](#-usage)
+- [How It Works](#-how-it-works)
+- [Screenshots](#-screenshots)
+- [Match Score Interpretation](#-match-score-interpretation)
+- [Future Scope](#-future-scope)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
-## Problem Statement
+##  Overview
 
-Many students and job seekers face the same challenges:
+**AI Job Copilot v2** is an end-to-end intelligent career assistance platform built for students, fresh graduates, and early-career professionals. It bridges the gap between academic skills and industry expectations by combining:
 
-- They do not know whether their resume actually fits a role
-- They are unsure which roles align with their skills
-- They do not know what skills are missing
-- They receive generic career advice instead of targeted feedback
+-  **Secure user authentication** with bcrypt-hashed passwords
+-  **AI-powered resume analysis** via Google Gemini API
+-  **Semantic job matching** using embeddings and cosine similarity
+-  **Personalized 30-day learning roadmaps**
+-  **Persistent user profiles** backed by SQLite
 
-AI Job Copilot addresses these problems by combining:
-
-- Resume analysis
-- Job-role alignment
-- Skill-gap intelligence
-- Personalized learning guidance
+Unlike keyword-based resume screeners, v2 understands the *context* of your experience and measures how closely your profile aligns with real industry requirements.
 
 ---
 
-## Tech Stack
+##  Features
 
-### Core Language
-- Python
+###  User Authentication
+- Secure login and signup with session management
+- Passwords hashed using **bcrypt** — never stored in plain text
+- Session state maintained across all Streamlit pages
 
-### Frontend / Application Framework
-- Streamlit
+###  Persistent User Profiles
+- Save education, skills, experience, preferred role, and location
+- Data persists in **SQLite** across sessions — no re-entry needed
+- Upload your resume once and reuse it every visit
 
-### AI / NLP / LLM
-- Google Gemini API
-- Embeddings
-- Cosine Similarity
-- Prompt-based analysis
-- NLP preprocessing
+###  Resume Upload & Parsing
+- Upload resume in **PDF format**
+- Automatic text extraction using **PyPDF**
+- Extracted content previewed and passed to AI agents
 
-### Data Processing
-- Pandas
-- NumPy
+###  AI Job Recommendations
+- Enter a job query (e.g., *"Junior Data Scientist with Python"*)
+- Generates 3 realistic, India-based job descriptions with title, company, skills, and experience level
 
-### Resume Parsing / File Handling
-- PyPDF / PDF parsing utilities
+###  Resume Analysis
+- Extracts key technical skills, strengths, and experience level
+- Identifies missing skills and provides recruiter-style feedback
 
-### Optional Supporting Libraries
-- Scikit-learn (if used for similarity support or vectorization)
-- Regex
-- JSON
-- Python-dotenv
+###  Skill Gap Detection
+- Compares your resume against generated job requirements
+- Lists matching skills, missing skills, missing tools, and improvement priorities
+
+###  30-Day Learning Roadmap
+- Structured week-by-week learning plan
+- Suggests specific projects to build and interview prep tips
+
+###  Semantic Match Score
+- Converts resume and job descriptions into **embedding vectors**
+- Computes **cosine similarity** for a contextual match percentage
+- Goes beyond keyword matching to evaluate deeper relevance
 
 ---
 
-## Recommended Project Structure
+##  System Architecture
 
-> If your current repository uses a simpler structure (for example, a single `app.py`), that is fine. This is the recommended professional structure for future improvement.
+```
+┌─────────────────────────────────────────────────────────┐
+│                     INPUT LAYER                         │
+│        Login/Signup · Profile · Resume PDF · Query      │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────┐
+│           AUTHENTICATION & SESSION LAYER                 │
+│         bcrypt Verification · session_state             │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────┐
+│                   DATABASE LAYER                         │
+│         SQLite (users.db) · users · profiles            │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────┐
+│               DATA PROCESSING LAYER                      │
+│          PyPDF Text Extraction · Session State          │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────┐
+│                  AI AGENT LAYER                          │
+│   Job Search · Resume Analysis · Skill Gap · Roadmap    │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────┐
+│               SEMANTIC MATCHING LAYER                    │
+│       Gemini Embeddings · Cosine Similarity · Score     │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────┐
+│              OUTPUT LAYER (Streamlit UI)                 │
+│     Jobs · Resume Analysis · Skill Gap · Roadmap        │
+└─────────────────────────────────────────────────────────┘
+```
 
-```bash
-AI-Job-Copilot-Agentic-AI-Resume-Matcher-Job-Recommender-/
-│── app.py
-│── requirements.txt
-│── README.md
-│── .gitignore
-│── .env.example
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Role | Version |
+|---|---|---|
+| Python | Core language | 3.10+ |
+| Streamlit | Multi-page web UI | 1.45.1 |
+| Google Gemini API | LLM — analysis, generation, embeddings | gemini-1.5-flash |
+| PyPDF | PDF resume text extraction | 5.5.0 |
+| NumPy | Vector operations & similarity computation | 2.2.5 |
+| scikit-learn | ML utilities | 1.6.1 |
+| SQLite (sqlite3) | Persistent user data storage | Built-in |
+| bcrypt | Password hashing & verification | 4.3.0 |
+| python-dotenv | Secure API key management | 1.0.1 |
+
+---
+
+##  Project Structure
+
+```
+AI_JOB_COPILOT/
 │
-├── modules/
-│   ├── resume_parser.py
-│   ├── resume_analyzer.py
-│   ├── job_matcher.py
-│   ├── skill_gap_analyzer.py
-│   ├── role_recommender.py
-│   ├── roadmap_generator.py
-│   └── utils.py
+├── app.py                   # Main entry point — Login / Signup UI
+├── agents.py                # All AI agent logic (job search, analysis, embeddings)
+├── auth.py                  # User registration and login logic
+├── database.py              # SQLite schema creation and initialization
 │
-├── assets/
-│   └── screenshots/
+├── pages/
+│   ├── 1_Profile.py         # User dashboard and resume upload
+│   ├── 2_Jobs.py            # AI analysis trigger and results display
+│   ├── 3_Resume_Analysis.py # Resume insights page
+│   ├── 4_Skill_Gap.py       # Skill gap report page
+│   └── 5_Roadmap.py         # 30-day learning roadmap page
 │
 ├── data/
-│   ├── sample_jobs.csv
-│   └── sample_resumes/
+│   └── users.db             # SQLite database (auto-created on first run)
 │
-└── temp_uploads/
+├── requirements.txt         # Python dependencies
+├── .env                     # API key (not committed to version control)
+├── .gitignore
+└── README.md
+```
+
+---
+
+##  Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ShivenSiwach/AI-Job-Copilot-v2.git
+cd ai-job-copilot
+```
+
+### 2. Create and activate a virtual environment
+
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# macOS / Linux
+python -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+**requirements.txt**
+```
+streamlit==1.45.1
+google-generativeai==0.8.5
+numpy==2.2.5
+pypdf==5.5.0
+python-dotenv==1.0.1
+scikit-learn==1.6.1
+bcrypt==4.3.0
+```
+
+### 4. Initialize the database
+
+```bash
+python database.py
+```
+
+### 5. Launch the application
+
+```bash
+python -m streamlit run app.py
+```
+
+---
+
+## 🔧 Configuration
+
+Create a `.env` file in the project root:
+
+```env
+GOOGLE_API_KEY=your_google_gemini_api_key_here
+```
+
+> **How to get a Gemini API key:**
+> 1. Go to [Google AI Studio](https://aistudio.google.com/)
+> 2. Sign in with your Google account
+> 3. Click **"Get API Key"** → **"Create API key"**
+> 4. Copy the key and paste it in your `.env` file
+
+> ⚠️ Never commit your `.env` file to version control. It is already listed in `.gitignore`.
+
+---
+
+## 🚀 Usage
+
+### Step-by-step workflow
+
+```
+1. Open the app  →  app.py loads the Login / Signup page
+2. Sign Up       →  Create an account (bcrypt-hashed password stored)
+3. Log In        →  Authenticate and access the dashboard
+4. Profile Page  →  Fill in your education, skills, experience, and upload your PDF resume
+5. Jobs Page     →  Enter a job query (e.g., "Data Analyst with SQL and Power BI")
+6. Click Analyze →  AI pipeline runs (job search + resume analysis + skill gap + roadmap)
+7. View Results  →  Browse tabs: Jobs Found · Resume Analysis · Skill Gap · 30-Day Roadmap
+```
+
+### Example job queries
+
+```
+Data Analyst with SQL and Power BI
+Junior Data Scientist
+Machine Learning Intern
+Data Scientist Fresher
+Entry Level NLP Engineer
+```
+
+---
+
+## ⚙️ How It Works
+
+### AI Agent Pipeline
+
+All four agents run via `agents.py` using the **Google Gemini API** (`gemini-1.5-flash`). Three agents execute **in parallel** using `ThreadPoolExecutor` to reduce wait time.
+
+```python
+with ThreadPoolExecutor() as executor:
+    future_resume  = executor.submit(resume_agent,   resume)
+    future_skill   = executor.submit(skill_gap_agent, resume, jobs)
+    future_roadmap = executor.submit(learning_roadmap_agent, resume, jobs)
+```
+
+### Semantic Match Score
+
+```
+Resume Text  ──► Gemini Embedding ──► Vector A ──┐
+                                                  ├──► Cosine Similarity ──► Match %
+Job Descriptions ──► Gemini Embedding ──► Vector B ──┘
+```
+
+**Formula:**
+```
+Cosine Similarity(A, B) = (A · B) / (‖A‖ × ‖B‖)
+```
+
+### Password Security
+
+```python
+# Registration — hash before storing
+hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+# Login — verify without exposing raw password
+bcrypt.checkpw(password.encode('utf-8'), stored_hash)
+```
+
+---
+
+## 📸 Screenshots
+
+| Page | Description |
+|---|---|
+| **Login / Signup** | Secure entry with sidebar menu |
+| **Profile Dashboard** | Pre-filled fields, PDF upload, Save Profile |
+| **Job Query Input** | Text input with example query suggestions |
+| **Jobs Found Tab** | 3 realistic job descriptions with company and skills |
+| **Match Score** | Semantic percentage score with progress bar |
+| **Resume Analysis** | Skills, strengths, experience level, recruiter feedback |
+| **Skill Gap Report** | Matching vs missing skills, tool gaps, priorities |
+| **30-Day Roadmap** | Weekly plans, project suggestions, interview tips |
+
+---
+
+## 🎯 Match Score Interpretation
+
+| Score | Label | Meaning |
+|---|---|---|
+| **80% and above** | 🟢 Excellent Match | Profile strongly aligns with the target role |
+| **60% – 79%** | 🟡 Good Match | Some improvements can increase alignment |
+| **Below 60%** | 🔴 Needs Improvement | Significant skill gaps to address |
+
+---
+
+## 🔮 Future Scope
+
+- [ ] **Real-time job portal integration** — fetch live listings from LinkedIn, Naukri, or Indeed via APIs
+- [ ] **JD Upload feature** — let users upload an actual job description for precise comparison
+- [ ] **ATS Score System** — evaluate resume formatting, keyword density, and structure
+- [ ] **AI-powered resume rewriting** — automated bullet point and wording improvements
+- [ ] **Multi-role recommendation** — suggest alternative career paths from the same resume
+- [ ] **RAG with vector databases** — integrate FAISS or Pinecone for contextual retrieval
+- [ ] **Cloud deployment** — migrate from SQLite to PostgreSQL/Firebase for multi-user support
+- [ ] **Email notifications** — job match alerts and roadmap reminders
+- [ ] **Resume version control** — compare match scores across resume versions
+- [ ] **Mobile-responsive UI** — improved Streamlit layout for smartphones and tablets
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! To get started:
+
+```bash
+# Fork the repo and create a feature branch
+git checkout -b feature/your-feature-name
+
+# Make your changes, then commit
+git commit -m "feat: add your feature description"
+
+# Push and open a Pull Request
+git push origin feature/your-feature-name
+```
+
+Please follow the existing code structure — one agent per function, one feature per page.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+Built as an academic project demonstrating the application of **LLMs**, **NLP**, **semantic search**, and **AI-driven career guidance** in the HR-Tech / Career-Tech domain.
+
+---
+
+<div align="center">
+
+⭐ **If this project helped you, give it a star!** ⭐
+
+*AI Job Copilot v2 — Bridging the gap between academic learning and industry expectations*
+
+</div>
