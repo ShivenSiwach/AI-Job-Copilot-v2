@@ -10,11 +10,13 @@ if not os.path.exists("data"):
 conn = sqlite3.connect("data/users.db", check_same_thread=False)
 cursor = conn.cursor()
 
-# 3. ADD THIS: Create the users table if it doesn't exist
 cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS profiles (
         username TEXT PRIMARY KEY,
-        password TEXT
+        full_name TEXT,
+        bio TEXT,
+        resume_text TEXT
+        -- ADD ANY OTHER COLUMNS YOU USED LOCALLY HERE
     )
 ''')
 conn.commit()
