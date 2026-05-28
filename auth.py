@@ -2,12 +2,22 @@ import sqlite3
 import bcrypt
 import os
 
-# Check if the data folder exists, if not, create it
+# 1. Create the folder if it doesn't exist
 if not os.path.exists("data"):
     os.makedirs("data")
 
+# 2. Connect to the database
 conn = sqlite3.connect("data/users.db", check_same_thread=False)
 cursor = conn.cursor()
+
+# 3. ADD THIS: Create the users table if it doesn't exist
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        username TEXT PRIMARY KEY,
+        password TEXT
+    )
+''')
+conn.commit()
 
 def create_user(username: str, password: str) -> bool:
     """Register a new user. Returns False if username exists."""
