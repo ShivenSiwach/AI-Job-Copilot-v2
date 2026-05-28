@@ -1,7 +1,12 @@
 import sqlite3
 import bcrypt
+import os
 
-conn   = sqlite3.connect("data/users.db", check_same_thread=False)
+# Check if the data folder exists, if not, create it
+if not os.path.exists("data"):
+    os.makedirs("data")
+
+conn = sqlite3.connect("data/users.db", check_same_thread=False)
 cursor = conn.cursor()
 
 def create_user(username: str, password: str) -> bool:
