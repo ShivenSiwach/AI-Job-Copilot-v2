@@ -5,9 +5,25 @@ from pypdf import PdfReader
 st.set_page_config(page_title="Profile | AI Job Copilot", page_icon="", layout="wide")
 
 #  Auth guard 
-if not st.session_state.get("logged_in"):
-    st.warning(" Please login first.")
-    st.stop()
+# 1. Fetch the profile
+cursor.execute("SELECT * FROM profiles WHERE username = ?", (st.session_state['username'],))
+profile_data = cursor.fetchone()
+
+# 2. Add a safety check
+if profile_data is not None:
+    # If data exists, pull the values out safely
+    full_name = profile_data[1]
+    bio = profile_data[2]
+    resume_text = profile_data[3]
+else:
+    # Fallback default values if the user hasn't filled their profile yet
+    full_name = ""
+    bio = ""
+    resume_text = ""
+
+# 3. Use these variables in your st.text_input or st.text_area fields
+name_input = st.text_input("Full Name", value=full_name)
+bio_input = st.text_area("Bio", value=bio)
 
 st.markdown("""
 <style>
