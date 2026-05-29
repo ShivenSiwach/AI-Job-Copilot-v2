@@ -1,14 +1,13 @@
 import streamlit as st
 
-if "logged_in" not in st.session_state:
-    st.stop()
+st.set_page_config(page_title="Skill Gap | AI Job Copilot", layout="wide")
 
-st.title("Skill Gap Analysis")
+if not st.session_state.get("logged_in"):
+    st.warning(" Please login first."); st.stop()
 
-if "skill_gap" not in st.session_state:
+st.title(" Skill Gap Detector")
 
-    st.warning("Generate AI Analysis first from Jobs page.")
-
+if st.session_state.get('analysis_complete'):
+    st.markdown(st.session_state['ai_skill'])
 else:
-
-    st.write(st.session_state.skill_gap)
+    st.warning("Please generate your AI Analysis first from the **Jobs** page.")
