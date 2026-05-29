@@ -5,7 +5,7 @@ from agents import (
     learning_roadmap_agent, get_embedding, cosine_similarity
 )
 
-st.set_page_config(page_title="Jobs | AI Job Copilot", page_icon="", layout="wide")
+st.set_page_config(page_title="Jobs | AI Job Copilot", layout="wide")
 
 if not st.session_state.get("logged_in"):
     st.warning(" Please login first."); st.stop()
@@ -53,10 +53,6 @@ with st.sidebar:
 
 resume = st.session_state.get("resume_text", "")
 
-# Save the results and a flag that it's done
-st.session_state['analysis_complete'] = True
-st.session_state['resume_data'] = my_ai_results_variable
-
 if not resume:
     st.info(" Please upload your resume on the **Profile** page first.")
     st.stop()
@@ -68,7 +64,7 @@ if st.button(" Analyse Resume & Find Jobs", use_container_width=True):
 
     with ThreadPoolExecutor() as ex:
         f_resume  = ex.submit(resume_agent,          resume)
-        f_skill   = ex.submit(skill_gap_agent,        resume, jobs)
+        f_skill   = ex.submit(skill_gap_agent,       resume, jobs)
         f_roadmap = ex.submit(learning_roadmap_agent, resume, jobs)
 
     progress.progress(75, text="Calculating match score...")
@@ -82,6 +78,7 @@ if st.button(" Analyse Resume & Find Jobs", use_container_width=True):
     badge = ("badge-green", "Excellent match") if pct >= 80 else \
             ("badge-yellow", "Good match")    if pct >= 60 else \
             ("badge-red", "Needs improvement")
+            
     st.markdown(f"""
     <div class="score-card">
       <div>
