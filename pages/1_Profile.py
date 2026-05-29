@@ -4,15 +4,20 @@ from pypdf import PdfReader
 
 st.set_page_config(page_title="Profile | AI Job Copilot", layout="wide")
 
-# 1. CONNECT TO THE DATABASE FIRST
+# --- THE FIX: AUTH GUARD ---
+# If the username is missing from memory, stop the page from crashing
+if 'username' not in st.session_state or st.session_state.username is None:
+    st.warning("Session expired. Please log in from the main app page.")
+    st.stop() 
+# ---------------------------
+
 conn   = sqlite3.connect("data/users.db", check_same_thread=False)
 cursor = conn.cursor()
 
-# 2. FETCH THE PROFILE ONCE
-cursor.execute("SELECT * FROM profiles WHERE username=?", (st.session_state.username,))
+# Notice we changed the table name to 'user_profiles' here!
+cursor.execute("SELECT * FROM user_profiles WHERE username=?", (st.session_state.username,))
 profile = cursor.fetchone()
 
-# 3. APPLY CSS STYLING
 st.markdown("""
 <style>
 .profile-header {
@@ -46,7 +51,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 4. RENDER HEADER
 initials = st.session_state.username[:2].upper()
 st.markdown(f"""
 <div class="profile-header">
@@ -58,13 +62,11 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 5. RENDER TABS
 tab1, tab2 = st.tabs([" Profile Info", " Resume"])
 
 with tab1:
     col1, col2 = st.columns(2)
     with col1:
-        # The 'if profile else' logic safely handles new users with empty DB rows
         education  = st.text_input(" Education",  value=profile[1] if profile else "", placeholder="e.g. B.Tech Computer Science")
         role       = st.text_input(" Preferred Role", value=profile[4] if profile else "", placeholder="e.g. Machine Learning Engineer")
     with col2:
@@ -74,8 +76,9 @@ with tab1:
     experience = st.text_area(" Experience", value=profile[3] if profile else "", placeholder="Describe your experience...", height=120)
 
     if st.button(" Save Profile", use_container_width=True):
+        # Pointing the insert to 'user_profiles'
         cursor.execute(
-            "INSERT OR REPLACE INTO profiles VALUES (?,?,?,?,?,?)",
+            "INSERT OR REPLACE INTO user_profiles VALUES (?,?,?,?,?,?)",
             (st.session_state.username, education, skills, experience, role, location)
         )
         conn.commit()
