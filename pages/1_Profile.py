@@ -2,29 +2,17 @@ import streamlit as st
 import sqlite3
 from pypdf import PdfReader
 
-st.set_page_config(page_title="Profile | AI Job Copilot", page_icon="", layout="wide")
+st.set_page_config(page_title="Profile | AI Job Copilot", layout="wide")
 
-#  Auth guard 
-# 1. Fetch the profile
-cursor.execute("SELECT * FROM profiles WHERE username = ?", (st.session_state['username'],))
-profile_data = cursor.fetchone()
+# 1. CONNECT TO THE DATABASE FIRST
+conn   = sqlite3.connect("data/users.db", check_same_thread=False)
+cursor = conn.cursor()
 
-# 2. Add a safety check
-if profile_data is not None:
-    # If data exists, pull the values out safely
-    full_name = profile_data[1]
-    bio = profile_data[2]
-    resume_text = profile_data[3]
-else:
-    # Fallback default values if the user hasn't filled their profile yet
-    full_name = ""
-    bio = ""
-    resume_text = ""
+# 2. FETCH THE PROFILE ONCE
+cursor.execute("SELECT * FROM profiles WHERE username=?", (st.session_state.username,))
+profile = cursor.fetchone()
 
-# 3. Use these variables in your st.text_input or st.text_area fields
-name_input = st.text_input("Full Name", value=full_name)
-bio_input = st.text_area("Bio", value=bio)
-
+# 3. APPLY CSS STYLING
 st.markdown("""
 <style>
 .profile-header {
@@ -58,7 +46,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Header 
+# 4. RENDER HEADER
 initials = st.session_state.username[:2].upper()
 st.markdown(f"""
 <div class="profile-header">
@@ -70,22 +58,19 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-#  Load existing profile 
-conn   = sqlite3.connect("data/users.db", check_same_thread=False)
-cursor = conn.cursor()
-cursor.execute("SELECT * FROM profiles WHERE username=?", (st.session_state.username,))
-profile = cursor.fetchone()
-
+# 5. RENDER TABS
 tab1, tab2 = st.tabs([" Profile Info", " Resume"])
 
 with tab1:
     col1, col2 = st.columns(2)
     with col1:
+        # The 'if profile else' logic safely handles new users with empty DB rows
         education  = st.text_input(" Education",  value=profile[1] if profile else "", placeholder="e.g. B.Tech Computer Science")
-        role       = st.text_input(" Preferred Role", value=profile[4] if profile else "", placeholder="e.g. Data Scientist")
+        role       = st.text_input(" Preferred Role", value=profile[4] if profile else "", placeholder="e.g. Machine Learning Engineer")
     with col2:
-        location   = st.text_input(" Location",   value=profile[5] if profile else "", placeholder="e.g. Bangalore, India")
-        skills     = st.text_area(" Skills",     value=profile[2] if profile else "", placeholder="Python, SQL, ML...", height=100)
+        location   = st.text_input(" Location",   value=profile[5] if profile else "", placeholder="e.g. Stockholm, Sweden")
+        skills     = st.text_area(" Skills",      value=profile[2] if profile else "", placeholder="Python, SQL, ML...", height=100)
+        
     experience = st.text_area(" Experience", value=profile[3] if profile else "", placeholder="Describe your experience...", height=120)
 
     if st.button(" Save Profile", use_container_width=True):
