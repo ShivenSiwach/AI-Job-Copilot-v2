@@ -53,6 +53,10 @@ with st.sidebar:
 
 resume = st.session_state.get("resume_text", "")
 
+# Save the results and a flag that it's done
+st.session_state['analysis_complete'] = True
+st.session_state['resume_data'] = my_ai_results_variable
+
 if not resume:
     st.info(" Please upload your resume on the **Profile** page first.")
     st.stop()
