@@ -69,12 +69,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Session state ───────────────────────────────────────────
+#  Session state 
 for key, val in {"logged_in": False, "username": ""}.items():
     if key not in st.session_state:
         st.session_state[key] = val
 
-# ── Sidebar ─────────────────────────────────────────────────
+# Sidebar 
 with st.sidebar:
     st.markdown("##  AI Job Copilot")
     st.markdown("---")
@@ -104,7 +104,7 @@ with st.sidebar:
             else:
                 st.error(" Username already exists.")
 
-# ── Main hero ───────────────────────────────────────────────
+# Main hero 
 if not st.session_state.logged_in:
     st.markdown("""
     <div class="hero-card">

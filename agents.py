@@ -1,20 +1,29 @@
 import os, time
 import numpy as np
-import google.generativeai as genai
+import google.genai as genai
 
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-MODEL = "gemini-2.5-flash"
+# Configure API key with validation
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY environment variable is not set")
+
+# Initialize the client with API key
+client = genai.Client(api_key=api_key)
+MODEL = "gemini-3.1-flash-lite"
 
 def generate_with_retry(prompt: str, retries: int = 3) -> str:
     for attempt in range(retries):
         try:
-            model    = genai.GenerativeModel(MODEL)
-            response = model.generate_content(prompt)
+            response = client.models.generate_content(
+                model=MODEL,
+                contents=prompt
+            )
             return response.text
         except Exception as e:
             print(f"Attempt {attempt+1} failed: {e}")
-            time.sleep(2)
-    return " Model unavailable. Please try again."
+            if attempt < retries - 1:  # Don't sleep on the last attempt
+                time.sleep(2)
+    return "Model unavailable. Please try again."
 
 def search_agent(query: str) -> str:
     return generate_with_retry(f"""
@@ -80,12 +89,52 @@ JOBS: {jobs}
 """)
 
 def get_embedding(text: str) -> np.ndarray:
-    result = genai.embed_content(
-        model="models/gemini-embedding-001",
-        content=text,
-        task_type="retrieval_document"
+    """
+    Get embedding for text using Google's embedding models.
+    Note: Model names may change over time. Current models to try:
+    - embedding-001 (recommended)
+    - text-embedding-004
+    - gemini-embedding-001
+    """
+    # Ensure text is a string
+    if not isinstance(text, str):
+        text = str(text)
+    
+    # List of embedding models to try, in order of preference
+    embedding_models = [
+        "embedding-001",        # Current recommended model
+        "text-embedding-004",  # Previous generation
+        "gemini-embedding-001" # Legacy model
+    ]
+    
+    for model_name in embedding_models:
+        try:
+            result = client.models.embed_content(
+                model=model_name,
+                contents=[text]
+            )
+            # Extract the embedding values
+            if hasattr(result, 'embeddings') and len(result.embeddings) > 0:
+                return np.array(result.embeddings[0].values)
+            else:
+                # Try alternative response structure
+                if hasattr(result, 'embedding'):
+                    return np.array(result.embedding)
+        except Exception as e:
+            # Only continue if it's a model not found error
+            error_str = str(e).lower()
+            if "not found" in error_str or "not_found" in error_str or "404" in error_str:
+                continue
+            else:
+                # For other errors (like auth issues), re-raise with context
+                raise RuntimeError(f"Embedding failed with model {model_name}: {e}")
+    
+    raise RuntimeError(
+        "No working embedding model found. "
+        "Please check: 1) Your API key is valid, 2) Your account has access to embedding models, "
+        "3) The model names haven't changed. "
+        "Try updating the embedding_models list in get_embedding() function."
     )
-    return np.array(result["embedding"])
 
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
