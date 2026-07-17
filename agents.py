@@ -1,21 +1,43 @@
 import os, time
 from dotenv import load_dotenv
 import numpy as np
-import google.genai as genai
+
+try:
+    import google.genai as genai
+except Exception:
+    genai = None
 
 # Load .env file
 load_dotenv()
 
-# Configure API key with validation
-api_key = os.getenv("GOOGLE_API_KEY")
-if not api_key:
-    raise ValueError("GOOGLE_API_KEY environment variable is not set")
 
-# Initialize the client with API key
-client = genai.Client(api_key=api_key)
+def _get_api_key() -> str | None:
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if api_key:
+        return api_key
+
+    try:
+        import streamlit as st
+        secrets = st.secrets
+        if "GOOGLE_API_KEY" in secrets:
+            return secrets["GOOGLE_API_KEY"]
+    except Exception:
+        pass
+
+    return None
+
+
+API_KEY = _get_api_key()
+if API_KEY and genai is not None:
+    client = genai.Client(api_key=API_KEY)
+else:
+    client = None
 MODEL = "gemini-3.1-flash-lite"
 
 def generate_with_retry(prompt: str, retries: int = 3) -> str:
+    if client is None:
+        return "AI features are unavailable because the Google API key is not configured."
+
     for attempt in range(retries):
         try:
             response = client.models.generate_content(
@@ -100,6 +122,9 @@ def get_embedding(text: str) -> np.ndarray:
     - text-embedding-004
     - gemini-embedding-001
     """
+    if client is None:
+        return np.zeros(1, dtype=float)
+
     # Ensure text is a string
     if not isinstance(text, str):
         text = str(text)
@@ -117,28 +142,21 @@ def get_embedding(text: str) -> np.ndarray:
                 model=model_name,
                 contents=[text]
             )
-            # Extract the embedding values
             if hasattr(result, 'embeddings') and len(result.embeddings) > 0:
                 return np.array(result.embeddings[0].values)
-            else:
-                # Try alternative response structure
-                if hasattr(result, 'embedding'):
-                    return np.array(result.embedding)
+            if hasattr(result, 'embedding'):
+                return np.array(result.embedding)
         except Exception as e:
-            # Only continue if it's a model not found error
             error_str = str(e).lower()
+            print(f"Embedding failed with model {model_name}: {e}")
             if "not found" in error_str or "not_found" in error_str or "404" in error_str:
                 continue
-            else:
-                # For other errors (like auth issues), re-raise with context
-                raise RuntimeError(f"Embedding failed with model {model_name}: {e}")
-    
-    raise RuntimeError(
-        "No working embedding model found. "
-        "Please check: 1) Your API key is valid, 2) Your account has access to embedding models, "
-        "3) The model names haven't changed. "
-        "Try updating the embedding_models list in get_embedding() function."
-    )
+
+    return np.zeros(1, dtype=float)
 
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
-    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+    norm_a = np.linalg.norm(a)
+    norm_b = np.linalg.norm(b)
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return float(np.dot(a, b) / (norm_a * norm_b))
