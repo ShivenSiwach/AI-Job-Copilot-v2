@@ -199,13 +199,15 @@ pip install -r requirements.txt
 
 **requirements.txt**
 ```
-streamlit==1.45.1
-google-generativeai==0.8.5
+﻿streamlit==1.45.1
+google-genai==0.1.0
 numpy==2.2.5
 pypdf==5.5.0
 python-dotenv==1.0.1
 scikit-learn==1.6.1
 bcrypt==4.3.0
+pandas==2.2.3
+matplotlib==3.10.3
 ```
 
 ### 4. Initialize the database
