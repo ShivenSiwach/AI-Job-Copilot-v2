@@ -1,21 +1,24 @@
-import os, time
+import os
+import time
 from dotenv import load_dotenv
 import numpy as np
 
+# Safe import for the GenAI SDK
 try:
     import google.genai as genai
 except Exception:
     genai = None
 
-# Load .env file
+# Load .env file for local development
 load_dotenv()
 
-
 def _get_api_key() -> str | None:
+    # 1. Try local environment variable
     api_key = os.getenv("GOOGLE_API_KEY")
     if api_key:
         return api_key
 
+    # 2. Try Streamlit secrets (for cloud deployment)
     try:
         import streamlit as st
         secrets = st.secrets
@@ -26,12 +29,13 @@ def _get_api_key() -> str | None:
 
     return None
 
-
+# Initialize Client
 API_KEY = _get_api_key()
 if API_KEY and genai is not None:
     client = genai.Client(api_key=API_KEY)
 else:
     client = None
+
 MODEL = "gemini-3.1-flash-lite"
 
 def generate_with_retry(prompt: str, retries: int = 3) -> str:
@@ -117,10 +121,6 @@ JOBS: {jobs}
 def get_embedding(text: str) -> np.ndarray:
     """
     Get embedding for text using Google's embedding models.
-    Note: Model names may change over time. Current models to try:
-    - embedding-001 (recommended)
-    - text-embedding-004
-    - gemini-embedding-001
     """
     if client is None:
         return np.zeros(1, dtype=float)
@@ -129,11 +129,11 @@ def get_embedding(text: str) -> np.ndarray:
     if not isinstance(text, str):
         text = str(text)
     
-    # List of embedding models to try, in order of preference
+    # Prioritize text-embedding-004 over legacy models
     embedding_models = [
-        "embedding-001",        # Current recommended model
-        "text-embedding-004",  # Previous generation
-        "gemini-embedding-001" # Legacy model
+        "text-embedding-004", 
+        "embedding-001",        
+        "gemini-embedding-001" 
     ]
     
     for model_name in embedding_models:
@@ -149,9 +149,17 @@ def get_embedding(text: str) -> np.ndarray:
         except Exception as e:
             error_str = str(e).lower()
             print(f"Embedding failed with model {model_name}: {e}")
+            
+            # If the API key is unauthorized, stop and raise the error immediately
+            if "401" in error_str or "unauthenticated" in error_str:
+                raise RuntimeError("Authentication failed (401). Please check your GOOGLE_API_KEY settings.")
+            
+            # If the model is simply not found (404), fall back to the next one
             if "not found" in error_str or "not_found" in error_str or "404" in error_str:
                 continue
 
+    # Return empty array if all models fail (prevents full app crash)
+    print("All embedding models failed.")
     return np.zeros(1, dtype=float)
 
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
