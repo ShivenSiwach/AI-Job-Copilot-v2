@@ -132,7 +132,7 @@ Unlike keyword-based resume screeners, v2 understands the *context* of your expe
 |---|---|---|
 | Python | Core language | 3.10+ |
 | Streamlit | Multi-page web UI | 1.45.1 |
-| Google Gemini API | LLM — analysis, generation, embeddings | gemini-1.5-flash |
+| Google Gemini API | LLM — analysis, generation, embeddings | "gemini-3.1-flash-lite" |
 | PyPDF | PDF resume text extraction | 5.5.0 |
 | NumPy | Vector operations & similarity computation | 2.2.5 |
 | scikit-learn | ML utilities | 1.6.1 |
