@@ -78,7 +78,7 @@ for key, val in {"logged_in": False, "username": ""}.items():
 with st.sidebar:
     st.markdown("##  AI Job Copilot")
     st.markdown("---")
-    tab = st.radio("", [" Login", " Sign Up"], label_visibility="collapsed")
+    tab = st.radio("Authentication", [" Login", " Sign Up"], label_visibility="collapsed")
     st.markdown("")
 
     if tab == " Login":

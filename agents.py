@@ -1,6 +1,10 @@
 import os, time
+from dotenv import load_dotenv
 import numpy as np
 import google.genai as genai
+
+# Load .env file
+load_dotenv()
 
 # Configure API key with validation
 api_key = os.getenv("GOOGLE_API_KEY")
