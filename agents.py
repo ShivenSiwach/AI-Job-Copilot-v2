@@ -13,12 +13,7 @@ except Exception:
 load_dotenv()
 
 def _get_api_key() -> str | None:
-    # 1. Try local environment variable
-    api_key = os.getenv("GOOGLE_API_KEY")
-    if api_key:
-        return api_key
-
-    # 2. Try Streamlit secrets (for cloud deployment)
+    # 1. Priority: Try Streamlit secrets (for cloud deployment)
     try:
         import streamlit as st
         secrets = st.secrets
@@ -26,6 +21,11 @@ def _get_api_key() -> str | None:
             return secrets["GOOGLE_API_KEY"]
     except Exception:
         pass
+
+    # 2. Fallback: Try local environment variable (for local development)
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if api_key:
+        return api_key
 
     return None
 
@@ -150,9 +150,9 @@ def get_embedding(text: str) -> np.ndarray:
             error_str = str(e).lower()
             print(f"Embedding failed with model {model_name}: {e}")
             
-            # If the API key is unauthorized, stop and raise the error immediately
-            if "401" in error_str or "unauthenticated" in error_str:
-                raise RuntimeError("Authentication failed (401). Please check your GOOGLE_API_KEY settings.")
+            # If the API key is unauthorized or invalid, stop and raise the error immediately
+            if any(err in error_str for err in ["401", "400", "unauthenticated", "invalid_argument"]):
+                raise RuntimeError("Authentication failed. Please check your GOOGLE_API_KEY settings.")
             
             # If the model is simply not found (404), fall back to the next one
             if "not found" in error_str or "not_found" in error_str or "404" in error_str:
