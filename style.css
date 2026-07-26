@@ -16,8 +16,18 @@
 }
 
 /* Global Canvas */
+/* Animated Cosmic Gradient Background */
+@keyframes cosmicFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .stApp {
-    background-color: var(--color-obsidian);
+    /* Uses your deep void, obsidian, and twilight colors */
+    background: linear-gradient(135deg, #0a0a13 0%, #040407 25%, #0c1d32 50%, #040407 75%, #0a0a13 100%);
+    background-size: 400% 400%;
+    animation: cosmicFlow 20s ease infinite; /* 20s makes it a very slow, cinematic shift */
     color: var(--color-carbon-vellum);
     font-family: var(--font-primary);
 }
