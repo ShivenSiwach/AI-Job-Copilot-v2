@@ -1,0 +1,81 @@
+/* style.css */
+:root {
+  --color-carbon-vellum: #fcfcfc;
+  --color-obsidian: #0a0a13;
+  --color-void: #040407;
+  --color-graphite: #08080c;
+  --color-ash: #a3a3b3;
+  --color-charcoal: #2a2a32;
+  --color-iris-glow: #6199f6;
+  --color-twilight: #4f4f80;
+  
+  --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-eyebrow: 'Space Mono', monospace;
+  --radius-cards: 10px;
+  --radius-pills: 100px;
+}
+
+/* Global Canvas */
+.stApp {
+    background-color: var(--color-obsidian);
+    color: var(--color-carbon-vellum);
+    font-family: var(--font-primary);
+}
+
+/* Sidebar Styling */
+section[data-testid="stSidebar"] {
+    background-color: var(--color-void);
+    border-right: 1px solid var(--color-charcoal);
+}
+
+/* Typography Constraints */
+h1, h2, h3 {
+    color: var(--color-carbon-vellum) !important;
+    font-weight: 400 !important; 
+    letter-spacing: -1.5px; 
+}
+p, span, label, .stMarkdown {
+    color: var(--color-ash);
+}
+
+/* Buttons (Pill Geometry) */
+.stButton > button {
+    background-color: transparent;
+    color: var(--color-carbon-vellum);
+    border: 1px solid var(--color-carbon-vellum);
+    border-radius: var(--radius-pills);
+    padding: 14px 28px;
+    font-weight: 400;
+    transition: all 0.2s ease;
+}
+.stButton > button:hover {
+    background-color: var(--color-carbon-vellum);
+    color: var(--color-obsidian);
+}
+.stButton > button[kind="primary"] {
+    background-color: var(--color-carbon-vellum) !important;
+    color: var(--color-obsidian) !important;
+    border: none !important;
+    font-weight: 500 !important;
+}
+
+/* Custom Job & Resume Cards */
+.custom-card {
+    background-color: var(--color-graphite);
+    border: 1px solid var(--color-twilight);
+    border-radius: var(--radius-cards);
+    padding: 24px;
+    box-shadow: inset 0 0 0 1px #4f4f80, 0 0 60px rgba(79, 79, 128, 0.15);
+    margin-bottom: 24px;
+}
+
+/* Eyebrow Labels */
+.eyebrow-label {
+    font-family: var(--font-eyebrow);
+    font-size: 12px;
+    color: var(--color-iris-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 0.90;
+    margin-bottom: 6px;
+}
