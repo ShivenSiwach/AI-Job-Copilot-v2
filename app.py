@@ -8,80 +8,139 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-#  Global CSS 
+# --- FRAME.IO "MIDNIGHT CINEMA" GLOBAL CSS ---
 st.markdown("""
 <style>
+:root {
+    --color-carbon-vellum: #fcfcfc;
+    --color-obsidian: #0a0a13;
+    --color-void: #040407;
+    --color-graphite: #08080c;
+    --color-smoke: #757580;
+    --color-ash: #a3a3b3;
+    --color-charcoal: #2a2a32;
+    --color-iris-glow: #6199f6;
+    --color-twilight: #4f4f80;
+    
+    --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-eyebrow: 'Space Mono', monospace;
+    --radius-cards: 10px;
+    --radius-pills: 100px;
+}
+
+/* Global Canvas */
+.stApp {
+    background-color: var(--color-obsidian);
+    color: var(--color-carbon-vellum);
+    font-family: var(--font-primary);
+}
+
+h1, h2, h3, h4 { 
+    color: var(--color-carbon-vellum) !important; 
+    font-weight: 400 !important; 
+    letter-spacing: -1.5px !important; 
+}
+
+p, span, label, .stMarkdown { 
+    color: var(--color-ash); 
+}
+
+/* Sidebar Styling */
 [data-testid="stSidebar"] {
-    background: #0f172a;
+    background-color: var(--color-void) !important;
+    border-right: 1px solid var(--color-charcoal);
 }
 [data-testid="stSidebar"] * {
-    color: #e2e8f0 !important;
+    color: var(--color-carbon-vellum) !important;
 }
 [data-testid="stSidebar"] .stTextInput input {
-    background: #1e293b;
-    border: 1px solid #334155;
-    color: #f1f5f9 !important;
-    border-radius: 8px;
+    background-color: var(--color-void) !important;
+    border: 1px solid var(--color-charcoal) !important;
+    color: var(--color-carbon-vellum) !important;
+    border-radius: var(--radius-cards) !important;
 }
 [data-testid="stSidebar"] .stTextInput input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99,102,241,0.3);
+    border-color: var(--color-iris-glow) !important;
+    box-shadow: 0 0 8px rgba(97, 153, 246, 0.3) !important;
 }
+
+/* Buttons (Pill Geometry) */
 .stButton > button {
-    background: #6366f1;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 600;
+    background-color: transparent !important;
+    color: var(--color-carbon-vellum) !important;
+    border: 1px solid var(--color-carbon-vellum) !important;
+    border-radius: var(--radius-pills) !important;
+    padding: 14px 28px !important;
+    font-weight: 400 !important;
     width: 100%;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
 }
 .stButton > button:hover {
-    background: #4f46e5;
+    background-color: var(--color-carbon-vellum) !important;
+    color: var(--color-obsidian) !important;
 }
+.stButton > button[kind="primary"] {
+    background-color: var(--color-carbon-vellum) !important;
+    color: var(--color-obsidian) !important;
+    border: none !important;
+    font-weight: 500 !important;
+}
+
+/* Hero Card - Cosmic Gradient & Violet Halo */
 .hero-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: 3rem 2rem;
+    background: linear-gradient(195deg, #0a0010 0%, #02000a 50%, #0c1d32 100%);
+    border: 1px solid var(--color-twilight);
+    border-radius: var(--radius-cards);
+    padding: 4rem 2rem;
     text-align: center;
-    color: white;
+    box-shadow: inset 0 0 0 1px #4f4f80, 0 0 60px rgba(79, 79, 128, 0.15);
     margin-bottom: 2rem;
 }
-.hero-card h1 { font-size: 2.5rem; font-weight: 800; margin: 0; }
-.hero-card p  { font-size: 1.1rem; opacity: 0.9; margin-top: 0.5rem; }
+.hero-card h1 { font-size: 3.5rem !important; font-weight: 400 !important; margin: 0; letter-spacing: -2.5px !important; }
+.hero-card p  { font-size: 1.1rem; color: var(--color-smoke); margin-top: 1rem; }
+
+/* Eyebrow Label */
+.eyebrow-label {
+    font-family: var(--font-eyebrow);
+    font-size: 12px;
+    color: var(--color-iris-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 0.90;
+    margin-bottom: 1rem;
+}
+
+/* Feature Grid - Transparent Typography Blocks */
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 1.5rem;
     margin-top: 1.5rem;
 }
 .feature-card {
-    background: white;
-    border-radius: 12px;
+    background-color: transparent;
     padding: 1.25rem;
     text-align: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
-.feature-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.feature-card h4 { font-size: 0.85rem; font-weight: 600; color: #1e293b; margin: 0; }
-.feature-card p  { font-size: 0.75rem; color: #64748b; margin: 0.25rem 0 0; }
+.feature-card .icon { font-size: 2rem; margin-bottom: 1rem; color: var(--color-iris-glow); }
+.feature-card h4 { font-size: 1.25rem; font-weight: 500 !important; color: var(--color-carbon-vellum); margin: 0; }
+.feature-card p  { font-size: 0.95rem; color: var(--color-ash); margin: 0.5rem 0 0; line-height: 1.5; }
 </style>
 """, unsafe_allow_html=True)
 
-#  Session state 
+# Session state
 for key, val in {"logged_in": False, "username": ""}.items():
     if key not in st.session_state:
         st.session_state[key] = val
 
-# Sidebar 
+# Sidebar
 with st.sidebar:
-    st.markdown("##  AI Job Copilot")
+    st.markdown("## 💼 AI Job Copilot")
     st.markdown("---")
-    tab = st.radio("Authentication", [" Login", " Sign Up"], label_visibility="collapsed")
+    tab = st.radio("Authentication", ["Login", "Sign Up"], label_visibility="collapsed")
     st.markdown("")
 
-    if tab == " Login":
+    if tab == "Login":
         st.markdown("**Welcome back**")
         username = st.text_input("Username", placeholder="Enter username", key="li_user")
         password = st.text_input("Password", type="password", placeholder="Enter password", key="li_pass")
@@ -92,7 +151,7 @@ with st.sidebar:
                 st.success("✅ Logged in!")
                 st.rerun()
             else:
-                st.error(" Invalid credentials.")
+                st.error("Invalid credentials.")
 
     else:
         st.markdown("**Create your account**")
@@ -100,22 +159,38 @@ with st.sidebar:
         password = st.text_input("Password", type="password", placeholder="Choose a password", key="su_pass")
         if st.button("Create Account →", use_container_width=True):
             if create_user(username, password):
-                st.success(" Account created! Please login.")
+                st.success("Account created! Please login.")
             else:
-                st.error(" Username already exists.")
+                st.error("Username already exists.")
 
-# Main hero 
+# Main hero
 if not st.session_state.logged_in:
     st.markdown("""
     <div class="hero-card">
-      <h1> AI Job Copilot</h1>
+      <div class="eyebrow-label">THE COPILOT PLATFORM</div>
+      <h1>AI Job Copilot</h1>
       <p>AI Resume Matcher · Skill Gap Detector · Career Coach</p>
     </div>
+    
     <div class="feature-grid">
-      <div class="feature-card"><div class="icon"></div><h4>Resume Analysis</h4><p>AI-powered insights</p></div>
-      <div class="feature-card"><div class="icon"></div><h4>Job Matching</h4><p>Semantic scoring</p></div>
-      <div class="feature-card"><div class="icon"></div><h4>30-Day Roadmap</h4><p>Personalised plan</p></div>
+      <div class="feature-card">
+          <div class="icon">📄</div>
+          <h4>Resume Analysis</h4>
+          <p>AI-powered insights tailored to your specific career trajectory.</p>
+      </div>
+      <div class="feature-card">
+          <div class="icon">🎯</div>
+          <h4>Job Matching</h4>
+          <p>Semantic scoring to map your profile perfectly against the market.</p>
+      </div>
+      <div class="feature-card">
+          <div class="icon">🗺️</div>
+          <h4>30-Day Roadmap</h4>
+          <p>Personalized step-by-step plans to conquer your skill gaps.</p>
+      </div>
     </div>
     """, unsafe_allow_html=True)
 else:
-    st.success(f" Welcome back, **{st.session_state.username}**! Use the sidebar to navigate.")
+    st.markdown(f'<div class="eyebrow-label">DASHBOARD</div>', unsafe_allow_html=True)
+    st.markdown(f"<h1>Welcome back, {st.session_state.username}</h1>", unsafe_allow_html=True)
+    st.write("Use the sidebar navigation to access your resume analysis and job matches.")
