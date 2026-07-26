@@ -15,23 +15,32 @@
   --radius-pills: 100px;
 }
 
-/* Global Canvas */
-.stApp {
-    /* Replace the URL with any direct link to a GIF, PNG, or JPG */
+/* 1. Target the ACTUAL main view container in Streamlit */
+[data-testid="stAppViewContainer"] {
+    /* Make sure to replace this URL with your actual image link! */
     background-image: linear-gradient(rgba(10, 10, 19, 0.85), rgba(10, 10, 19, 0.85)), 
-                      url("https://example.com/your-dark-cinematic-loop.gif");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    
+                      url("https://example.com/your-dark-cinematic-loop.gif") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+/* 2. Make the top header (with the Deploy button) transparent */
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+/* 3. Global Canvas Text Colors */
+.stApp {
     color: var(--color-carbon-vellum);
     font-family: var(--font-primary);
+    background: transparent !important;
 }
 
 /* Sidebar Styling */
 section[data-testid="stSidebar"] {
-    background-color: var(--color-void);
+    background-color: var(--color-void) !important;
     border-right: 1px solid var(--color-charcoal);
 }
 
