@@ -17,9 +17,9 @@
 
 /* 1. Target the ACTUAL main view container in Streamlit */
 [data-testid="stAppViewContainer"] {
-    /* Make sure to replace this URL with your actual image link! */
-    background-image: linear-gradient(rgba(10, 10, 19, 0.85), rgba(10, 10, 19, 0.85)), 
-                      url("https://pin.it/7a9MBcPrV") !important;
+    /* Uses a dark overlay + a high-res dark cinematic abstract background */
+    background-image: linear-gradient(rgba(10, 10, 19, 0.85), rgba(10, 10, 19, 0.90)), 
+                      url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop") !important;
     background-size: cover !important;
     background-position: center !important;
     background-attachment: fixed !important;
