@@ -16,18 +16,15 @@
 }
 
 /* Global Canvas */
-/* Animated Cosmic Gradient Background */
-@keyframes cosmicFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 .stApp {
-    /* Uses your deep void, obsidian, and twilight colors */
-    background: linear-gradient(135deg, #0a0a13 0%, #040407 25%, #0c1d32 50%, #040407 75%, #0a0a13 100%);
-    background-size: 400% 400%;
-    animation: cosmicFlow 20s ease infinite; /* 20s makes it a very slow, cinematic shift */
+    /* Replace the URL with any direct link to a GIF, PNG, or JPG */
+    background-image: linear-gradient(rgba(10, 10, 19, 0.85), rgba(10, 10, 19, 0.85)), 
+                      url("https://example.com/your-dark-cinematic-loop.gif");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    
     color: var(--color-carbon-vellum);
     font-family: var(--font-primary);
 }
