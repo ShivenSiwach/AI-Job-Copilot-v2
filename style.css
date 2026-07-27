@@ -1,30 +1,64 @@
-/* style.css - Clean SaaS Light Dashboard */
+/* style.css - Liquid Glass SaaS Theme */
 :root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f9fafb;
     --text-main: #111827;
-    --text-muted: #6b7280;
-    --border-light: #e5e7eb;
+    --text-muted: #4b5563;
     --accent-blue: #3b82f6;
-    --accent-green: #10b981;
     --btn-dark: #1f2937;
-    --radius-md: 12px;
-    --radius-pill: 100px;
+    --glass-bg: rgba(255, 255, 255, 0.55); /* Translucent white */
+    --glass-border: rgba(255, 255, 255, 0.8); /* Glossy edge */
 }
 
-/* Global Background */
+/* 1. The Dynamic Pastel Mesh Background */
+@keyframes fluidMesh {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(120deg, #f0f9ff, #e0e7ff, #f3e8ff, #f0f9ff) !important;
+    background-size: 300% 300% !important;
+    animation: fluidMesh 15s ease infinite !important;
+}
+
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
 .stApp {
-    background-color: var(--bg-primary);
     color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    background: transparent !important;
 }
 
-/* Sidebar overrides */
+/* 2. The Frosted Glass Sidebar */
 section[data-testid="stSidebar"] {
-    background-color: var(--bg-secondary) !important;
-    border-right: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important; /* Safari support */
+    border-right: 1px solid var(--glass-border) !important;
 }
 
-/* Clean Typography */
+/* 3. The Liquid Glass Cards */
+.dash-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    padding: 24px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05) !important;
+    margin-bottom: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Add a gentle lift effect on hover */
+.dash-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.08) !important;
+}
+
+/* Typography and Metrics */
 h1, h2, h3, h4 {
     color: var(--text-main) !important;
     font-weight: 600 !important;
@@ -33,60 +67,29 @@ h1, h2, h3, h4 {
 p, span, label {
     color: var(--text-muted);
 }
-
-/* The Subtle Dashboard Cards */
-.dash-card {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    margin-bottom: 16px;
-}
-
-/* Metrics Styling (To match the 60, 25, 18 numbers) */
 [data-testid="stMetricValue"] {
     font-size: 2.5rem !important;
     font-weight: 600 !important;
-    color: var(--text-main) !important;
-}
-[data-testid="stMetricDelta"] svg {
-    color: var(--accent-green) !important; /* Forces the up arrow to be green */
 }
 
-/* Primary Dark Button (Like "1-click setup") */
+/* Buttons */
 .stButton > button[kind="primary"] {
     background-color: var(--btn-dark) !important;
     color: #ffffff !important;
     border: none !important;
-    border-radius: var(--radius-md) !important;
+    border-radius: 12px !important;
     font-weight: 500 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
 }
 
-/* Secondary Button (Like "Import", "Customized") */
-.stButton > button[kind="secondary"] {
-    background-color: var(--bg-primary) !important;
-    color: var(--text-main) !important;
-    border: 1px solid var(--border-light) !important;
-    border-radius: var(--radius-pill) !important;
-    font-weight: 500 !important;
-    padding: 4px 16px !important;
+/* Input Fields (Make them match the glass theme) */
+.stTextInput input, .stTextArea textarea {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 10px !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
 }
-.stButton > button[kind="secondary"]:hover {
-    background-color: var(--bg-secondary) !important;
-    border-color: #d1d5db !important;
+.stTextInput input:focus {
+    border-color: var(--accent-blue) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
 }
-
-/* Right-side list item styling */
-.list-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border-light);
-}
-.list-item:last-child {
-    border-bottom: none;
-}
-.list-item h4 { margin: 0; font-size: 14px !important; font-weight: 600 !important;}
-.list-item p { margin: 0; font-size: 12px; color: var(--text-muted); }
