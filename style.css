@@ -4,8 +4,11 @@
     --text-muted: #4b5563;
     --accent-blue: #3b82f6;
     --btn-dark: #1f2937;
-    --glass-bg: rgba(255, 255, 255, 0.55); /* Translucent white */
-    --glass-border: rgba(255, 255, 255, 0.8); /* Glossy edge */
+    
+    /* Make the glass much more transparent (15% instead of 55%) */
+    --glass-bg: rgba(255, 255, 255, 0.15); 
+    /* Soften the white border */
+    --glass-border: rgba(255, 255, 255, 0.4); 
 }
 
 /* 1. The Dynamic Pastel Mesh Background */
