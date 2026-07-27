@@ -96,3 +96,9 @@ p, span, label {
     border-color: var(--accent-blue) !important;
     background: rgba(255, 255, 255, 0.95) !important;
 }
+
+/* Force all of Streamlit's structural blocks to be transparent */
+[data-testid="stVerticalBlock"], 
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: transparent !important;
+}
