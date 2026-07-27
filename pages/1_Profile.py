@@ -4,13 +4,12 @@ from pypdf import PdfReader
 
 st.set_page_config(page_title="Profile | AI Job Copilot", layout="wide")
 
-# Ensure CSS persists
 def load_css(file_name):
     try:
         with open(file_name) as f:
             st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     except FileNotFoundError:
-        pass # Handle if running from different directory
+        pass
 load_css("style.css") 
 load_css("../style.css")
 
@@ -28,43 +27,45 @@ st.markdown("""
 <style>
 .profile-header {
     display: flex; align-items: center; gap: 1.5rem;
-    padding: 2rem; background: var(--color-graphite);
-    border-radius: var(--radius-cards); margin-bottom: 2rem;
-    border: 1px solid var(--color-twilight);
-    box-shadow: inset 0 0 0 1px #4f4f80, 0 0 60px rgba(79, 79, 128, 0.15);
+    padding: 1.5rem; background: var(--bg-primary);
+    border-radius: var(--radius-md); margin-bottom: 1.5rem;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 .avatar {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: var(--color-iris-glow);
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--accent-blue);
     display: flex; align-items: center; justify-content: center;
-    color: var(--color-obsidian); font-size: 1.5rem; font-weight: 600; flex-shrink: 0;
+    color: #ffffff; font-size: 1.5rem; font-weight: 600; flex-shrink: 0;
 }
-.profile-header h2 { margin: 0 !important; font-size: 1.5rem !important; color: var(--color-carbon-vellum); font-weight: 500 !important; letter-spacing: -1px; }
-.profile-header p  { margin: 0; font-size: 0.95rem; color: var(--color-ash); }
+.profile-header h2 { margin: 0 !important; font-size: 1.5rem !important; color: var(--text-main); font-weight: 600 !important; letter-spacing: -0.5px; }
+.profile-header p  { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
 .upload-zone {
-    border: 1px dashed var(--color-iris-glow); border-radius: var(--radius-cards);
-    padding: 3rem; text-align: center; background: rgba(97, 153, 246, 0.05);
+    border: 2px dashed var(--border-light); border-radius: var(--radius-md);
+    padding: 3rem; text-align: center; background: var(--bg-secondary);
 }
-.upload-zone p { color: var(--color-iris-glow); margin: 0.5rem 0 0; font-size: 0.85rem; font-weight: 500;}
+.upload-zone p { color: var(--text-main); margin: 0.5rem 0 0; font-size: 0.85rem; font-weight: 500;}
 </style>
 """, unsafe_allow_html=True)
 
 initials = st.session_state.username[:2].upper()
-st.markdown('<div class="eyebrow-label">USER PROFILE</div>', unsafe_allow_html=True)
+st.title("Settings")
+
 st.markdown(f"""
 <div class="profile-header">
   <div class="avatar">{initials}</div>
   <div>
     <h2>{st.session_state.username}</h2>
-    <p>Career profile & resume</p>
+    <p>Manage your career profile and documents</p>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
-tab1, tab2 = st.tabs(["Profile Info", "Resume"])
+tab1, tab2 = st.tabs(["Profile Details", "Document Upload"])
 
 with tab1:
-    st.markdown('<div class="custom-card">', unsafe_allow_html=True)
+    st.markdown('<div class="dash-card">', unsafe_allow_html=True)
+    st.markdown("<h4>Personal Information</h4><br>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
         education  = st.text_input("Education",  value=profile[1] if profile else "", placeholder="e.g. B.Tech Computer Science")
@@ -75,7 +76,7 @@ with tab1:
         
     experience = st.text_area("Experience", value=profile[3] if profile else "", placeholder="Describe your experience...", height=120)
 
-    if st.button("Save Profile", use_container_width=True):
+    if st.button("Save Profile", type="primary"):
         cursor.execute(
             "INSERT OR REPLACE INTO user_profiles VALUES (?,?,?,?,?,?)",
             (st.session_state.username, education, skills, experience, role, location)
@@ -85,7 +86,8 @@ with tab1:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with tab2:
-    st.markdown('<div class="custom-card">', unsafe_allow_html=True)
+    st.markdown('<div class="dash-card">', unsafe_allow_html=True)
+    st.markdown("<h4>Resume Import</h4><br>", unsafe_allow_html=True)
     st.markdown('<div class="upload-zone">', unsafe_allow_html=True)
     uploaded = st.file_uploader("Upload your resume", type=["pdf"], label_visibility="collapsed")
     st.markdown('<p>Drop your PDF resume here · Max 200MB</p></div>', unsafe_allow_html=True)
