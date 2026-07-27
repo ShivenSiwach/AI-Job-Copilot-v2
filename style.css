@@ -1,96 +1,92 @@
-/* style.css */
+/* style.css - Clean SaaS Light Dashboard */
 :root {
-  --color-carbon-vellum: #fcfcfc;
-  --color-obsidian: #0a0a13;
-  --color-void: #040407;
-  --color-graphite: #08080c;
-  --color-ash: #a3a3b3;
-  --color-charcoal: #2a2a32;
-  --color-iris-glow: #6199f6;
-  --color-twilight: #4f4f80;
-  
-  --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-eyebrow: 'Space Mono', monospace;
-  --radius-cards: 10px;
-  --radius-pills: 100px;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-light: #e5e7eb;
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --btn-dark: #1f2937;
+    --radius-md: 12px;
+    --radius-pill: 100px;
 }
 
-/* 1. Target the ACTUAL main view container in Streamlit */
-[data-testid="stAppViewContainer"] {
-    background-image: linear-gradient(rgba(10, 10, 19, 0.85), rgba(10, 10, 19, 0.85)), 
-                      url("./background.jpg") !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
-    background-repeat: no-repeat !important;
-}
-
-/* 2. Make the top header (with the Deploy button) transparent */
-[data-testid="stHeader"] {
-    background: transparent !important;
-}
-
-/* 3. Global Canvas Text Colors */
+/* Global Background */
 .stApp {
-    color: var(--color-carbon-vellum);
-    font-family: var(--font-primary);
-    background: transparent !important;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
 }
 
-/* Sidebar Styling */
+/* Sidebar overrides */
 section[data-testid="stSidebar"] {
-    background-color: var(--color-void) !important;
-    border-right: 1px solid var(--color-charcoal);
+    background-color: var(--bg-secondary) !important;
+    border-right: 1px solid var(--border-light);
 }
 
-/* Typography Constraints */
-h1, h2, h3 {
-    color: var(--color-carbon-vellum) !important;
-    font-weight: 400 !important; 
-    letter-spacing: -1.5px; 
+/* Clean Typography */
+h1, h2, h3, h4 {
+    color: var(--text-main) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.5px;
 }
-p, span, label, .stMarkdown {
-    color: var(--color-ash);
+p, span, label {
+    color: var(--text-muted);
 }
 
-/* Buttons (Pill Geometry) */
-.stButton > button {
-    background-color: transparent;
-    color: var(--color-carbon-vellum);
-    border: 1px solid var(--color-carbon-vellum);
-    border-radius: var(--radius-pills);
-    padding: 14px 28px;
-    font-weight: 400;
-    transition: all 0.2s ease;
+/* The Subtle Dashboard Cards */
+.dash-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    margin-bottom: 16px;
 }
-.stButton > button:hover {
-    background-color: var(--color-carbon-vellum);
-    color: var(--color-obsidian);
+
+/* Metrics Styling (To match the 60, 25, 18 numbers) */
+[data-testid="stMetricValue"] {
+    font-size: 2.5rem !important;
+    font-weight: 600 !important;
+    color: var(--text-main) !important;
 }
+[data-testid="stMetricDelta"] svg {
+    color: var(--accent-green) !important; /* Forces the up arrow to be green */
+}
+
+/* Primary Dark Button (Like "1-click setup") */
 .stButton > button[kind="primary"] {
-    background-color: var(--color-carbon-vellum) !important;
-    color: var(--color-obsidian) !important;
+    background-color: var(--btn-dark) !important;
+    color: #ffffff !important;
     border: none !important;
+    border-radius: var(--radius-md) !important;
     font-weight: 500 !important;
 }
 
-/* Custom Job & Resume Cards */
-.custom-card {
-    background-color: var(--color-graphite);
-    border: 1px solid var(--color-twilight);
-    border-radius: var(--radius-cards);
-    padding: 24px;
-    box-shadow: inset 0 0 0 1px #4f4f80, 0 0 60px rgba(79, 79, 128, 0.15);
-    margin-bottom: 24px;
+/* Secondary Button (Like "Import", "Customized") */
+.stButton > button[kind="secondary"] {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: var(--radius-pill) !important;
+    font-weight: 500 !important;
+    padding: 4px 16px !important;
+}
+.stButton > button[kind="secondary"]:hover {
+    background-color: var(--bg-secondary) !important;
+    border-color: #d1d5db !important;
 }
 
-/* Eyebrow Labels */
-.eyebrow-label {
-    font-family: var(--font-eyebrow);
-    font-size: 12px;
-    color: var(--color-iris-glow);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    line-height: 0.90;
-    margin-bottom: 6px;
+/* Right-side list item styling */
+.list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-light);
 }
+.list-item:last-child {
+    border-bottom: none;
+}
+.list-item h4 { margin: 0; font-size: 14px !important; font-weight: 600 !important;}
+.list-item p { margin: 0; font-size: 12px; color: var(--text-muted); }
